@@ -1,0 +1,92 @@
+#to find portfolio manager name
+
+import requests
+from bs4 import BeautifulSoup
+
+# Create a session
+session = requests.Session()
+
+# Set headers to mimic a browser request
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
+}
+
+# Make a GET request to the website
+website_url = "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doPmr=yes"
+response = session.get(website_url, headers=headers)
+
+# Create a BeautifulSoup object to parse the HTML
+soup = BeautifulSoup(response.content, "lxml")
+
+# Find the desired <div> element that contains the data
+div_element = soup.find('div', class_='dd_area portfolio-search')
+
+if div_element:
+    # Extract the option values and convert them to integers
+    items = div_element.select('option[value]')
+
+    invalid_values = []
+    values = []
+
+    for item in items:
+        value = item['value']
+        if value.strip() != '':
+            try:
+                values.append(int(value))
+            except ValueError:
+                invalid_values.append(value)
+        else:
+            print("Empty value found")
+
+    print("Invalid values:", invalid_values)
+    print("Valid values:", values)
+else:
+    print("Desired div element not found.")
+    
+    
+    
+    
+    
+  # for committee search- with PM name, Year and Month number
+  
+ 
+  
+  import requests
+from bs4 import BeautifulSoup
+
+# Create a session
+session = requests.Session()
+
+# Set headers to mimic a browser request
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36',
+}
+
+# Make a GET request to the website
+website_url = "https://www.sebi.gov.in/sebiweb/other/OtherAction.do?doPmr=yes"
+response = session.get(website_url, headers=headers)
+
+# Create a BeautifulSoup object to parse the HTML
+soup = BeautifulSoup(response.content, "lxml")
+
+# Find the desired <div> element that contains the data
+div_element = soup.find('div', class_='committee-search')
+
+if div_element:
+    # Extract the option values and convert them to integers
+    items = div_element.select('option[value]')
+    values = []
+
+    for item in items:
+        value = item['value']
+        if value.strip() != '':
+            try:
+                values.append(int(value))
+            except ValueError:
+                print(f"Invalid value: {value}")
+        else:
+            print("Empty value found")
+
+    print(values)
+else:
+    print("Desired div element not found.")
